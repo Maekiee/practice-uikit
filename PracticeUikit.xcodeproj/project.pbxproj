@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		764F12162E6056A1003ADF58 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 764F12152E6056A1003ADF58 /* RxCocoa */; };
+		764F12182E6056A1003ADF58 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 764F12172E6056A1003ADF58 /* RxSwift */; };
+		764F121B2E6056AE003ADF58 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 764F121A2E6056AE003ADF58 /* SnapKit */; };
+		764F121E2E6056C2003ADF58 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 764F121D2E6056C2003ADF58 /* Toast */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		764F11FC2E60559A003ADF58 /* PracticeUikit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PracticeUikit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				764F121E2E6056C2003ADF58 /* Toast in Frameworks */,
+				764F121B2E6056AE003ADF58 /* SnapKit in Frameworks */,
+				764F12182E6056A1003ADF58 /* RxSwift in Frameworks */,
+				764F12162E6056A1003ADF58 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +89,10 @@
 			);
 			name = PracticeUikit;
 			packageProductDependencies = (
+				764F12152E6056A1003ADF58 /* RxCocoa */,
+				764F12172E6056A1003ADF58 /* RxSwift */,
+				764F121A2E6056AE003ADF58 /* SnapKit */,
+				764F121D2E6056C2003ADF58 /* Toast */,
 			);
 			productName = PracticeUikit;
 			productReference = 764F11FC2E60559A003ADF58 /* PracticeUikit.app */;
@@ -107,6 +122,11 @@
 			);
 			mainGroup = 764F11F32E60559A003ADF58;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				764F12142E6056A1003ADF58 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				764F12192E6056AE003ADF58 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				764F121C2E6056C2003ADF58 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 764F11FD2E60559A003ADF58 /* Products */;
 			projectDirPath = "";
@@ -152,6 +172,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -179,6 +200,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -333,6 +355,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		764F12142E6056A1003ADF58 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+		764F12192E6056AE003ADF58 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		764F121C2E6056C2003ADF58 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scalessec/Toast-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		764F12152E6056A1003ADF58 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 764F12142E6056A1003ADF58 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		764F12172E6056A1003ADF58 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 764F12142E6056A1003ADF58 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		764F121A2E6056AE003ADF58 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 764F12192E6056AE003ADF58 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		764F121D2E6056C2003ADF58 /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 764F121C2E6056C2003ADF58 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
+			productName = Toast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 764F11F42E60559A003ADF58 /* Project object */;
 }
