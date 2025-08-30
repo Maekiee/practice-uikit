@@ -1,16 +1,17 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-
-class LoginViewController: UIViewController {
-    let idTextField: UITextField = {
+final class LoginViewController: UIViewController {
+    private let idTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "아이디를 입력해 주세요"
         tf.borderStyle = .roundedRect
         return tf
     }()
     
-    let idValidateStateLabel: UILabel = {
+    private let idValidateStateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .red
         label.font = .systemFont(ofSize: 11)
@@ -18,14 +19,14 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    let passwordTextField: UITextField = {
+    private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "비밀전호를 입력해주세요"
         tf.borderStyle = .roundedRect
         return tf
     }()
     
-    let passwordValidateStateLabel: UILabel = {
+    private let passwordValidateStateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .red
         label.font = .systemFont(ofSize: 11)
@@ -33,15 +34,38 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    let loginButton: CustomButton = CustomButton(title: "로그인")
+    private let loginButton: CustomButton = CustomButton(title: "로그인")
     
-    let signupButton: CustomButton = CustomButton(title: "회원 가입")
+    private let viewModel = LoginViewModel()
+    private let disposeBag = DisposeBag()
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configHierarchy()
         configLayout()
         configView()
+        
+        bind()
+        
+    }
+    
+    private func bind() {
+            
+        let input = LoginViewModel.Input(
+            idTextValue: idTextField.rx.text.orEmpty,
+            passwordTextValue: passwordTextField.rx.text.orEmpty,
+            loginButtonTapped: loginButton.rx.tap
+        )
+        
+        
+        
+        let output = viewModel.transform(input: input)
+        
+        
+        
     }
 
 }
@@ -54,8 +78,7 @@ extension LoginViewController: UIConfigureViewController {
             idValidateStateLabel,
             passwordTextField,
             passwordValidateStateLabel,
-            loginButton,
-            signupButton
+            loginButton
             
         ].forEach { view.addSubview($0) }
     }
@@ -93,12 +116,12 @@ extension LoginViewController: UIConfigureViewController {
             make.horizontalEdges.equalToSuperview().inset(40)
             make.height.equalTo(40)
         }
-        signupButton.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-            make.horizontalEdges.equalToSuperview().inset(40)
-            make.height.equalTo(40)
-        }
+//        signupButton.snp.makeConstraints { make in
+//            make.top.equalTo(loginButton.snp.bottom).offset(20)
+//            make.centerX.equalToSuperview()
+//            make.horizontalEdges.equalToSuperview().inset(40)
+//            make.height.equalTo(40)
+//        }
         
         
     }
