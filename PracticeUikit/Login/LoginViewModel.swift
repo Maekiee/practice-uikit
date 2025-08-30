@@ -12,6 +12,7 @@ class LoginViewModel: BaseViewModel {
     }
     
     struct Output {
+        let idValidateText: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
@@ -21,10 +22,11 @@ class LoginViewModel: BaseViewModel {
         
         input.idTextValue
             .bind(with: self) { owner, text in
-                if text.count > 2 && text.count <= 15 {
-                    idValidateText.accept(text)
-                } else {
+                if text.count >= 2 && text.count <= 15 {
                     
+                } else {
+                    var idValidateText = "아이디는 2자리 이상 15자리 이하로 입력해주세요"
+                    idValidateText.append(idValidateText)
                 }
             }.disposed(by: disposeBag)
         
@@ -39,7 +41,7 @@ class LoginViewModel: BaseViewModel {
             }.disposed(by: disposeBag)
         
         
-        return Output()
+        return Output(idValidateText: idValidateText)
     }
     
 }

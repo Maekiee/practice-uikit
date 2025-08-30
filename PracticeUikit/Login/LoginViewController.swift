@@ -15,7 +15,7 @@ final class LoginViewController: UIViewController {
         let label = UILabel()
         label.textColor = .red
         label.font = .systemFont(ofSize: 11)
-        label.text = "아이디 유효성 검사 테스트 텍스트"
+        label.text = ""
         return label
     }()
     
@@ -63,7 +63,6 @@ final class LoginViewController: UIViewController {
         
         
         let output = viewModel.transform(input: input)
-        
         
         
     }
