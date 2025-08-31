@@ -9,12 +9,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let navRootVc = UINavigationController(rootViewController: LoginViewController())
-//        let navRootVc = UINavigationController(rootViewController: CreateProfileViewController())
-//        let navRootVc = UINavigationController(rootViewController: ProfileImageSettingViewController())
-//        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
+        
+        // 유저 디폴트 값에 따라서 초기값 분기 처리
+//        let navRootVc = UINavigationController(rootViewController: LoginViewController())
+        
+        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
+        
         window?.rootViewController = navRootVc
         window?.makeKeyAndVisible()
+    }
+    
+    func changeRootVC(_ vc: UIViewController ) {
+        guard let window = self.window else { return }
+        
+        window.rootViewController = vc
+        
+        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve) { }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

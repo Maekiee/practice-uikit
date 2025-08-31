@@ -39,9 +39,6 @@ final class LoginViewController: UIViewController {
     private let viewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
     
-    
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configHierarchy()
@@ -73,6 +70,16 @@ final class LoginViewController: UIViewController {
         output.buttonEnabled
             .bind(to: loginButton.rx.isEnabled)
             .disposed(by: disposeBag)
+        
+        output.isChangeRootView
+            .skip(1)
+            .bind(with: self) { owner, _ in
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                      let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+                
+                sceneDelegate.changeRootVC(MainTabBarViewController())
+                
+            }.disposed(by: disposeBag)
     }
 
 }

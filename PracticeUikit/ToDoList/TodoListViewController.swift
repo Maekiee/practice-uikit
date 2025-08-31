@@ -4,13 +4,11 @@ import RxSwift
 import RxCocoa
 
 class TodoListViewController: UIViewController {
-    
     let searchBar = UISearchBar()
     private let tableView: UITableView = {
         let view = UITableView()
         view.register(TodoTableViewCell.self, forCellReuseIdentifier: TodoTableViewCell.identifier)
         view.backgroundColor = .lightGray
-//        view.rowHeight =
         view.separatorStyle = .none
         return view
     }()
@@ -19,7 +17,8 @@ class TodoListViewController: UIViewController {
         "a","b","c","d","e","f","g","h","i","k",
     ])
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
+    private let viewModel = TodoViewModel()
     
     
     override func viewDidLoad() {
@@ -33,14 +32,26 @@ class TodoListViewController: UIViewController {
     }
     
     func bind() {
-        list.bind(to: tableView.rx.items(cellIdentifier: TodoTableViewCell.identifier, cellType: TodoTableViewCell.self)) {
+        let input = TodoViewModel.Input(
+            inputButtonTapped: searchBar.rx.searchButtonClicked,
+            inputText: searchBar.rx.text.orEmpty
+        )
+        let output = viewModel.transform(input: input)
+        
+        
+        output.todoList.bind(to: tableView.rx.items(cellIdentifier: TodoTableViewCell.identifier, cellType: TodoTableViewCell.self)) {
             (row, element, cell) in
-            cell.numberLabel.text = "\(row)"
-            cell.todoLabel.text = element
+            cell.numberLabel.text = "\(row+1)"
+            cell.todoLabel.text = element.title
         }.disposed(by: disposeBag)
+        
+        
+        
+        
     }
     
 }
+
 
 extension TodoListViewController: UIConfigureViewController {
     func configHierarchy() {

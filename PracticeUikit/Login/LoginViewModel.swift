@@ -15,12 +15,14 @@ class LoginViewModel: BaseViewModel {
         let idValidState: BehaviorRelay<Bool>
         let passwordValidState: BehaviorRelay<Bool>
         let buttonEnabled: BehaviorRelay<Bool>
+        let isChangeRootView: BehaviorRelay<Bool>
     }
     
     func transform(input: Input) -> Output {
         let idValidState = BehaviorRelay<Bool>(value: true)
         let passwordValidState = BehaviorRelay<Bool>(value: true)
         let buttonEnabled = BehaviorRelay<Bool>(value: false)
+        let isChangeRootView = BehaviorRelay<Bool>(value: false)
         
         let idValid = input.idTextValue
             .skip(2)
@@ -35,8 +37,9 @@ class LoginViewModel: BaseViewModel {
         let everythingValid = Observable.combineLatest(idValid, passwordValid) { $0 && $1 }.share(replay: 1)
         
         input.loginButtonTapped
+            .withLatestFrom(everythingValid)
             .bind(with: self) { owner, value in
-                print(value)
+                isChangeRootView.accept(value)
             }.disposed(by: disposeBag)
         
         idValid.bind(with: self) { owner, value in
@@ -51,14 +54,11 @@ class LoginViewModel: BaseViewModel {
             buttonEnabled.accept(value)
         }.disposed(by: disposeBag)
         
-        
-        
-    
-        
         return Output(
             idValidState: idValidState,
             passwordValidState: passwordValidState,
-            buttonEnabled: buttonEnabled)
+            buttonEnabled: buttonEnabled,
+            isChangeRootView: isChangeRootView)
     }
     
 }
