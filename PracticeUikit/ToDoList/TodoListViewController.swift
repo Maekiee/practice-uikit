@@ -31,10 +31,13 @@ class TodoListViewController: UIViewController {
 
     }
     
-    func bind() {
+    
+    
+    private func bind() {
         let input = TodoViewModel.Input(
             inputButtonTapped: searchBar.rx.searchButtonClicked,
             inputText: searchBar.rx.text.orEmpty
+            
         )
         let output = viewModel.transform(input: input)
         
@@ -43,7 +46,16 @@ class TodoListViewController: UIViewController {
             (row, element, cell) in
             cell.numberLabel.text = "\(row+1)"
             cell.todoLabel.text = element.title
+            cell.checkButton.rx.tap
+                .bind(with: self) { owner, value in
+                }.disposed(by: cell.disposeBag)
         }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .bind(with: self) { owner, value in
+                let vc = CreateProfileViewController()
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }.disposed(by: disposeBag)
         
         
         

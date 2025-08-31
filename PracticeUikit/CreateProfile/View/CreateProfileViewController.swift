@@ -1,5 +1,7 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 enum MBTIType:String, CaseIterable {
     case E, S, T, J, I, N, F, P
@@ -53,7 +55,7 @@ final class CreateProfileViewController: UIViewController {
         button.layer.cornerRadius = 22
         button.tintColor = .white
         button.backgroundColor = .blue
-        button.isUserInteractionEnabled = false
+        button.isUserInteractionEnabled = true
         return button
     }()
     private let contianerStackView: UIStackView = {
@@ -79,6 +81,12 @@ final class CreateProfileViewController: UIViewController {
     }()
 //    private let mbtiButtons = MBTIType.MBTIbtn
     
+    private let disposeBag = DisposeBag()
+    
+    deinit {
+        print("프로필 생성 화면 꺼짐")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +94,12 @@ final class CreateProfileViewController: UIViewController {
         configLayout()
         configView()
         setMBTILayout()
+        
+        completeButton.rx.tap
+            .bind(with: self) { owner, _ in
+                let vc = ProfileImageSettingViewController()
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }.disposed(by: disposeBag)
         
 //        viewModel.input.profileImage.bind { [weak self] value in
 //            guard let self = self else { return }

@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
-
+import RxSwift
+import RxCocoa
 
 class TodoTableViewCell: UITableViewCell {
     
@@ -16,6 +17,8 @@ class TodoTableViewCell: UITableViewCell {
         return label
     }()
     
+    var disposeBag = DisposeBag()
+    
     
     let checkButton: UIButton = {
         let button = UIButton()
@@ -23,12 +26,20 @@ class TodoTableViewCell: UITableViewCell {
         return button
     }()
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configHierarchy()
         configLayout()
         configView()
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -63,7 +74,6 @@ extension TodoTableViewCell: UIConfigureViewController {
     }
     
     func configView() {
-        
     }
     
     

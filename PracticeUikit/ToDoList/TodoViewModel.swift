@@ -50,7 +50,6 @@ final class TodoViewModel: BaseViewModel {
         
         if let saveData = UserDefaults.standard.data(forKey: Keys.todos) {
             if let decodedTodos = try? decoder.decode([Todo].self, from: saveData) {
-                print(decodedTodos)
                 return decodedTodos
             }
         }
