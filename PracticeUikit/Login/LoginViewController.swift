@@ -15,7 +15,7 @@ final class LoginViewController: UIViewController {
         let label = UILabel()
         label.textColor = .red
         label.font = .systemFont(ofSize: 11)
-        label.text = ""
+        label.text = "2자리 이상 15잘 이하로 입력해 주세요"
         return label
     }()
     
@@ -30,7 +30,7 @@ final class LoginViewController: UIViewController {
         let label = UILabel()
         label.textColor = .red
         label.font = .systemFont(ofSize: 11)
-        label.text = "비밀번호 유효성 검사 테스트 텍스트"
+        label.text = "8자리 이상 입력해주세요"
         return label
     }()
     
@@ -60,11 +60,19 @@ final class LoginViewController: UIViewController {
             loginButtonTapped: loginButton.rx.tap
         )
         
-        
-        
         let output = viewModel.transform(input: input)
         
+        output.idValidState
+            .bind(to: idValidateStateLabel.rx.isHidden)
+            .disposed(by: disposeBag)
         
+        output.passwordValidState
+            .bind(to: passwordValidateStateLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output.buttonEnabled
+            .bind(to: loginButton.rx.isEnabled)
+            .disposed(by: disposeBag)
     }
 
 }
@@ -89,12 +97,11 @@ extension LoginViewController: UIConfigureViewController {
             make.horizontalEdges.equalToSuperview().inset(40)
             make.height.equalTo(40)
         }
+        
         idValidateStateLabel.snp.makeConstraints { make in
             make.top.equalTo(idTextField.snp.bottom).offset(2)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(44)
         }
-        
-        
         
         passwordTextField.snp.makeConstraints { make in
             make.top.equalTo(idValidateStateLabel.snp.bottom).offset(20)
@@ -102,12 +109,11 @@ extension LoginViewController: UIConfigureViewController {
             make.horizontalEdges.equalToSuperview().inset(40)
             make.height.equalTo(40)
         }
+        
         passwordValidateStateLabel.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(2)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(44)
         }
-        
-        
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(passwordValidateStateLabel.snp.bottom).offset(20)
@@ -115,13 +121,6 @@ extension LoginViewController: UIConfigureViewController {
             make.horizontalEdges.equalToSuperview().inset(40)
             make.height.equalTo(40)
         }
-//        signupButton.snp.makeConstraints { make in
-//            make.top.equalTo(loginButton.snp.bottom).offset(20)
-//            make.centerX.equalToSuperview()
-//            make.horizontalEdges.equalToSuperview().inset(40)
-//            make.height.equalTo(40)
-//        }
-        
         
     }
     

@@ -12,36 +12,53 @@ class LoginViewModel: BaseViewModel {
     }
     
     struct Output {
-        let idValidateText: PublishRelay<String>
+        let idValidState: BehaviorRelay<Bool>
+        let passwordValidState: BehaviorRelay<Bool>
+        let buttonEnabled: BehaviorRelay<Bool>
     }
     
     func transform(input: Input) -> Output {
-        let idValidateText = PublishRelay<String>()
-        let passwordValidateText = PublishRelay<String>()
+        let idValidState = BehaviorRelay<Bool>(value: true)
+        let passwordValidState = BehaviorRelay<Bool>(value: true)
+        let buttonEnabled = BehaviorRelay<Bool>(value: false)
         
+        let idValid = input.idTextValue
+            .skip(2)
+            .map { $0.count > 2 && $0.count < 15 }
+            .share(replay: 1)
         
-        input.idTextValue
-            .bind(with: self) { owner, text in
-                if text.count >= 2 && text.count <= 15 {
-                    
-                } else {
-                    var idValidateText = "아이디는 2자리 이상 15자리 이하로 입력해주세요"
-                    idValidateText.append(idValidateText)
-                }
+        let passwordValid = input.passwordTextValue
+            .skip(2)
+            .map { $0.count > 8 }
+            .share(replay: 1)
+        
+        let everythingValid = Observable.combineLatest(idValid, passwordValid) { $0 && $1 }.share(replay: 1)
+        
+        input.loginButtonTapped
+            .bind(with: self) { owner, value in
+                print(value)
             }.disposed(by: disposeBag)
         
+        idValid.bind(with: self) { owner, value in
+            idValidState.accept(value)
+        }.disposed(by: disposeBag)
         
-        input.passwordTextValue
-            .bind(with: self) { owner, text in
-                if text.count > 2 && text.count <= 15 {
-                    passwordValidateText.accept(text)
-                } else {
-                    
-                }
-            }.disposed(by: disposeBag)
+        passwordValid.bind(with: self) { owner, value in
+            passwordValidState.accept(value)
+        }.disposed(by: disposeBag)
+        
+        everythingValid.bind(with: self) { owner, value in
+            buttonEnabled.accept(value)
+        }.disposed(by: disposeBag)
         
         
-        return Output(idValidateText: idValidateText)
+        
+    
+        
+        return Output(
+            idValidState: idValidState,
+            passwordValidState: passwordValidState,
+            buttonEnabled: buttonEnabled)
     }
     
 }
