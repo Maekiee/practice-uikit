@@ -9,10 +9,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let navRootVc = UINavigationController(rootViewController: LoginViewController())
+//        let navRootVc = UINavigationController(rootViewController: LoginViewController())
 //        let navRootVc = UINavigationController(rootViewController: CreateProfileViewController())
 //        let navRootVc = UINavigationController(rootViewController: ProfileImageSettingViewController())
-//        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
+        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
         window?.rootViewController = navRootVc
         window?.makeKeyAndVisible()
     }
