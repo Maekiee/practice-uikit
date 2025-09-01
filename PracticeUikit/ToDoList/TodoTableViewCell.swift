@@ -4,27 +4,22 @@ import RxSwift
 import RxCocoa
 
 class TodoTableViewCell: UITableViewCell {
-    
     let numberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         return label
     }()
-    
     let todoLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         return label
     }()
-    
-    var disposeBag = DisposeBag()
-    
-    
     let checkButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
         return button
     }()
+    
+    var disposeBag = DisposeBag()
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -39,8 +34,23 @@ class TodoTableViewCell: UITableViewCell {
         configLayout()
         configView()
         
-        
+        bind()
     }
+    
+    private func bind() {
+//        checkButton.rx.tap
+//            .bind(with: self) { owner, value in
+//                
+//                owner.checkButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
+//            }.disposed(by: disposeBag)
+    }
+    
+    func setData(_ row: Int, _ rowData: Todo) {
+        numberLabel.text = "\(row+1)"
+        todoLabel.text = rowData.title
+        checkButton.setImage(UIImage(systemName: rowData.isCompleted ? "checkmark.square.fill" : "checkmark.square"), for: .normal)
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

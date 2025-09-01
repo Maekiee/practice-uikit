@@ -37,29 +37,39 @@ class TodoListViewController: UIViewController {
         let input = TodoViewModel.Input(
             inputButtonTapped: searchBar.rx.searchButtonClicked,
             inputText: searchBar.rx.text.orEmpty
-            
         )
-        let output = viewModel.transform(input: input)
         
+        let output = viewModel.transform(input: input)
         
         output.todoList.bind(to: tableView.rx.items(cellIdentifier: TodoTableViewCell.identifier, cellType: TodoTableViewCell.self)) {
             (row, element, cell) in
-            cell.numberLabel.text = "\(row+1)"
-            cell.todoLabel.text = element.title
+            cell.setData(row, element)
             cell.checkButton.rx.tap
                 .bind(with: self) { owner, value in
+                    if let savedData = UserDefaults.standard.data(forKey: Keys.todos) {
+                        let decoder = JSONDecoder()
+                        
+                        
+                        if var todos = try? decoder.decode([Todo].self, from: savedData) {
+                            if let index = todos.firstIndex(where: { $0.id == element.id }) {
+                                todos[index].isCompleted.toggle()
+                            }
+                            
+                            
+                            let encoder = JSONEncoder()
+                            if let encodedData = try? encoder.encode(todos) {
+                                UserDefaults.standard.set(encodedData, forKey: Keys.todos)
+                            }
+                            output.todoList.accept(todos)
+                        }
+                    }
                 }.disposed(by: cell.disposeBag)
         }.disposed(by: disposeBag)
         
-        tableView.rx.itemSelected
-            .bind(with: self) { owner, value in
-                let vc = CreateProfileViewController()
-                owner.navigationController?.pushViewController(vc, animated: true)
+        tableView.rx.modelSelected(Todo.self)
+            .bind(with: self) { owner, item in
+                print(item)
             }.disposed(by: disposeBag)
-        
-        
-        
-        
     }
     
 }
