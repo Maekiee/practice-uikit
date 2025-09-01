@@ -33,16 +33,6 @@ class TodoTableViewCell: UITableViewCell {
         configHierarchy()
         configLayout()
         configView()
-        
-        bind()
-    }
-    
-    private func bind() {
-//        checkButton.rx.tap
-//            .bind(with: self) { owner, value in
-//                
-//                owner.checkButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-//            }.disposed(by: disposeBag)
     }
     
     func setData(_ row: Int, _ rowData: Todo) {

@@ -15,7 +15,7 @@ final class TodoViewModel: BaseViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let loadData = loadTodros()
+        let loadData = UserDefaultManager.shared.todoList
         let copyTodoList = BehaviorRelay<[Todo]>(value: loadData)
         
         input.inputButtonTapped
@@ -23,38 +23,16 @@ final class TodoViewModel: BaseViewModel {
             .distinctUntilChanged()
             .bind(with: self) { owner, value in
                 var list = copyTodoList.value
-                let todo: Todo = Todo(id: UUID(), title: value, isCompleted: false)
+                let todo = Todo(id: UUID(), title: value, isCompleted: false)
                 list.insert(todo, at: 0)
                 
                 copyTodoList.accept(list)
-                owner.saveTodo(list)
+                UserDefaultManager.shared.todoList = list
             }.disposed(by: disposeBag)
         
         
         
         
         return Output(todoList: copyTodoList)
-    }
-    
-    private func saveTodo(_ todo: [Todo]) {
-        let encoder = JSONEncoder()
-        
-        if let encodedData = try? encoder.encode(todo) {
-            print(encodedData)
-            UserDefaults.standard.set(encodedData, forKey: Keys.todos)
-        }
-    }
-    
-    private func loadTodros() -> [Todo] {
-        let decoder = JSONDecoder()
-        
-        if let saveData = UserDefaults.standard.data(forKey: Keys.todos) {
-            if let decodedTodos = try? decoder.decode([Todo].self, from: saveData) {
-                return decodedTodos
-            }
-        }
-        
-        return []
-    }
-    
+    }    
 }

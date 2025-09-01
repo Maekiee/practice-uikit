@@ -46,30 +46,20 @@ class TodoListViewController: UIViewController {
             cell.setData(row, element)
             cell.checkButton.rx.tap
                 .bind(with: self) { owner, value in
-                    if let savedData = UserDefaults.standard.data(forKey: Keys.todos) {
-                        let decoder = JSONDecoder()
-                        
-                        
-                        if var todos = try? decoder.decode([Todo].self, from: savedData) {
-                            if let index = todos.firstIndex(where: { $0.id == element.id }) {
-                                todos[index].isCompleted.toggle()
-                            }
-                            
-                            
-                            let encoder = JSONEncoder()
-                            if let encodedData = try? encoder.encode(todos) {
-                                UserDefaults.standard.set(encodedData, forKey: Keys.todos)
-                            }
-                            output.todoList.accept(todos)
-                        }
+                    
+                    var allList = UserDefaultManager.shared.todoList
+                    
+                    if let index = allList.firstIndex(where: { $0.id == element.id }) {
+                        allList[index].isCompleted.toggle()
                     }
+                    
+                    UserDefaultManager.shared.todoList = allList
+                    
+                    output.todoList.accept(allList)
+                    
                 }.disposed(by: cell.disposeBag)
         }.disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(Todo.self)
-            .bind(with: self) { owner, item in
-                print(item)
-            }.disposed(by: disposeBag)
     }
     
 }
