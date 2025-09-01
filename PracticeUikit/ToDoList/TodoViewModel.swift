@@ -24,15 +24,15 @@ final class TodoViewModel: BaseViewModel {
             .bind(with: self) { owner, value in
                 var list = copyTodoList.value
                 let todo = Todo(id: UUID(), title: value, isCompleted: false)
-                list.insert(todo, at: 0)
                 
-                copyTodoList.accept(list)
+                list.insert(todo, at: 0)
                 UserDefaultManager.shared.todoList = list
+                copyTodoList.accept(list)
             }.disposed(by: disposeBag)
         
         
         
         
         return Output(todoList: copyTodoList)
-    }    
+    }
 }

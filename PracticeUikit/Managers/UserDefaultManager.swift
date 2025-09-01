@@ -11,7 +11,6 @@ class UserDefaultManager {
     private let decoder = JSONDecoder()
     
     
-    
     var todoList: [Todo] {
         get {
             guard let todos = UserDefaults.standard.data(forKey: Keys.todos),
@@ -21,9 +20,14 @@ class UserDefaultManager {
         
         set {
             if let newTodos = try? encoder.encode(newValue) {
-                print(newTodos)
                 UserDefaults.standard.set(newTodos, forKey: Keys.todos)
             }
+        }
+    }
+    
+    func updateTodoList(selectedId: UUID) {
+        if let index = todoList.firstIndex(where: { selectedId == $0.id }) {
+            todoList[index].isCompleted.toggle()
         }
     }
     

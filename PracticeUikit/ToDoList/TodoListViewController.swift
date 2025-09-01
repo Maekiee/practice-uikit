@@ -46,17 +46,9 @@ class TodoListViewController: UIViewController {
             cell.setData(row, element)
             cell.checkButton.rx.tap
                 .bind(with: self) { owner, value in
-                    
-                    var allList = UserDefaultManager.shared.todoList
-                    
-                    if let index = allList.firstIndex(where: { $0.id == element.id }) {
-                        allList[index].isCompleted.toggle()
-                    }
-                    
-                    UserDefaultManager.shared.todoList = allList
-                    
-                    output.todoList.accept(allList)
-                    
+                    UserDefaultManager.shared.updateTodoList(selectedId: element.id)
+                    let todoList = UserDefaultManager.shared.todoList
+                    output.todoList.accept(todoList)
                 }.disposed(by: cell.disposeBag)
         }.disposed(by: disposeBag)
         
