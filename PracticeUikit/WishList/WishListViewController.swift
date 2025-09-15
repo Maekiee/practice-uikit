@@ -1,9 +1,11 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
+
 
 struct Product: Hashable {
     let name: String
-    let price: Int
     let uploadDate: String
 }
 
@@ -13,6 +15,9 @@ class WishListViewController: UIViewController {
     enum Section: CaseIterable {
         case main
     }
+    
+    private let viewModel = WishListViewModel()
+    private let disposeBag = DisposeBag()
     
     private let searchBar = UISearchBar()
     
@@ -27,13 +32,13 @@ class WishListViewController: UIViewController {
         dataSource.apply(snapshot)
     }
     
-    let list = [
-        Product(name: "Lofree flow2", price: 199000, uploadDate: "25.08.22"),
-        Product(name: "프레임바이 듀얼 스탠드", price: 88000, uploadDate: "25.09.02"),
-        Product(name: "샤오미 공기청정기", price: 230000, uploadDate: "24.02.22"),
-        Product(name: "알루미늄 2단 접이식 거치대", price: 199000, uploadDate: "25.04.01"),
-        Product(name: "냉동 삼겹살 1kg", price: 23000, uploadDate: "25.07.15"),
-        Product(name: "물티슈", price: 15000, uploadDate: "25.08.30"),
+    var list = [
+        Product(name: "Lofree flow2", uploadDate: "25.08.22"),
+        Product(name: "프레임바이 듀얼 스탠드", uploadDate: "25.09.02"),
+        Product(name: "샤오미 공기청정기", uploadDate: "24.02.22"),
+        Product(name: "알루미늄 2단 접이식 거치대", uploadDate: "25.04.01"),
+        Product(name: "냉동 삼겹살 1kg",  uploadDate: "25.07.15"),
+        Product(name: "물티슈", uploadDate: "25.08.30"),
     ]
  
     override func viewDidLoad() {
@@ -41,8 +46,35 @@ class WishListViewController: UIViewController {
         setupUI()
         setupConstraints()
         
+        searchBar.delegate = self
+        
         configDataSource()
         updateSnapshot()
+        
+        bind()
+    }
+    
+    func bind() {
+        let input = WishListViewModel.Input(
+            searchBarTapped: searchBar.rx.searchButtonClicked
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .bind(with: self) { owner, text in
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yy.MM.dd"
+                let currentDateString = formatter.string(from: Date())
+                let product = Product(name: text, uploadDate: currentDateString)
+                
+                owner.list.insert(product, at: 0)
+                owner.updateSnapshot()
+                
+            }.disposed(by: disposeBag)
+        
     }
     
     private func configDataSource() {
@@ -53,7 +85,7 @@ class WishListViewController: UIViewController {
             content.text = itemIdentifier.name
             content.textProperties.color = .blue
             content.textProperties.font = .boldSystemFont(ofSize: 17)
-            content.secondaryText = itemIdentifier.price.formatted() + "원"
+            content.secondaryText = itemIdentifier.uploadDate
             content.image = UIImage(systemName: "checkmark.square")
             cell.contentConfiguration = content
             
@@ -74,6 +106,11 @@ class WishListViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout.list(using: config)
         return layout
     }
+}
+
+
+extension WishListViewController: UISearchBarDelegate {
+    
 }
 
 
