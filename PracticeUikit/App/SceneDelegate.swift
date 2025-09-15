@@ -13,9 +13,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 유저 디폴트 값에 따라서 초기값 분기 처리
 //        let navRootVc = UINavigationController(rootViewController: LoginViewController())
         
-        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
+//        let navRootVc = UINavigationController(rootViewController: TodoListViewController())
+//        let navRootVc = UINavigationController(rootViewController: WishListViewController())
         
-        window?.rootViewController = navRootVc
+        window?.rootViewController = WishListViewController()
         window?.makeKeyAndVisible()
     }
     
